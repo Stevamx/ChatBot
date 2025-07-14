@@ -1,0 +1,15 @@
+# Ignorar node_modules (pasta com dependências)
+node_modules/
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar chave privada do Firebase para segurança
+firebase-key.json
+
+# Ignorar arquivos do sistema (Windows)
+Thumbs.db
+.DS_Store
+
+# Ignorar arquivos de ambiente
+.env
