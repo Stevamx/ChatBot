@@ -1,7 +1,7 @@
 {
   "name": "bot",
   "version": "1.0.0",
-  "description": "Bot integrado com ChatGPT e API de taxa",
+  "description": "Bot integrado com ChatGPT, Firebase e API de taxa",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "firebase-admin": "^13.4.0",
     "openai": "^5.9.0"
   }
 }
