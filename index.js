@@ -18,9 +18,16 @@ if (!process.env.FIREBASE_SERVICE_ACCOUNT || !process.env.OPENAI_API_KEY) {
 }
 
 // ✅ Inicializa Firebase Admin com a chave do ambiente
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-// Corrige as quebras de linha para o formato PEM válido
-serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+let serviceAccount;
+
+try {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  // 🔥 Corrige as quebras de linha da chave privada
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+} catch (error) {
+  console.error("❌ ERRO ao parsear FIREBASE_SERVICE_ACCOUNT:", error);
+  process.exit(1);
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -68,7 +75,7 @@ app.post("/mensagem", async (req, res) => {
       return res.status(400).json({ error: "Campos obrigatórios: mensagem, empresaId e bairroId" });
     }
 
-    // 🔥 Se estiver na nuvem, usar a URL pública, senão localhost
+    // 🔥 Se estiver no Render, usar a URL pública, senão localhost
     const apiBaseURL =
       process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 3000}`;
 
@@ -96,7 +103,6 @@ app.post("/mensagem", async (req, res) => {
     });
 
     const resposta = completion.choices[0].message.content;
-
     res.json({ resposta });
   } catch (error) {
     console.error("❌ Erro no processamento da mensagem:", error);
